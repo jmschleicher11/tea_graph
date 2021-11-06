@@ -82,30 +82,34 @@ def clean_info_json(info_json):
     clean_info['min_price'] = info_json['price_min']
     
     return clean_info
-    
 
-sub_pages = ['pu-erh', 'black-tea', 'black-tea?page=2', 'black-tea?page=3',
-              'green-tea', 'green-tea?page=2', 'green-tea?page=3', 
-              'herbal-tea', 'herbal-tea?page=2', 'herbal-tea?page=3', 
-              'herbal-tea?page=4', 'mate-tea', 'oolong-tea', 
-              'organic', 'organic?page=2', 'organic?page=3', 
-              'rooibos', 'white-tea']
+
+categories = ['pu-erh', 'black-tea', 'green-tea', 'herbal-tea', 'mate-tea', 
+             'oolong-tea', 'organic', 'rooibos', 'white-tea']
 
 all_tea_info = []
 
-for page in sub_pages:
-    print(page)
-    time.sleep(10)
-    url = url_string+page
-    page_info = requests.get(url)
-    soup = BeautifulSoup(page_info.content, 'html.parser')
-    tea_json = soup.find_all(type='application/json')
+for category in categories:
     
-    ## First two application/json tags in pages are not relevant
-    for item in tea_json[2:]:
-        info = json.loads(item.contents[0])  
-        tea_dict = clean_info_json(info)
-        all_tea_info.append(tea_dict)
+    ## Some categories have multiple pages (no more than 6)
+    sub_pages = [category] + [category+'?page='+str(i) for i in range(1,6)]
+    for sub_page in sub_pages:
+        print(sub_page)
+        time.sleep(10)
+        url = url_string+sub_page
+        page_info = requests.get(url)
+        soup = BeautifulSoup(page_info.content, 'html.parser')
+        tea_json = soup.find_all(type='application/json')
+        
+        ## This will be empty if the page doesn't exit
+        if len(tea_json[2:]) == 0:
+            break
+        else:
+            ## First two application/json tags in pages are not relevant
+            for item in tea_json[2:]:
+                info = json.loads(item.contents[0])  
+                tea_dict = clean_info_json(info)
+                all_tea_info.append(tea_dict)
             
 final_tea_dict = {"items": all_tea_info}
             
