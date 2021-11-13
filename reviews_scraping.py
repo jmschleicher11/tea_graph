@@ -33,17 +33,18 @@ def convert_soup_to_json(parsed_soup):
 
 ## The reviews page has an API call that is triggered by clicking the next button. Using Selenium
 ## to iterate through the 100 pages of reviews and saving each page's reviews as a json dictionary.
-for i in range(1,101):
-    time.sleep(50*random())
+def scrape_reviews():
+    for i in range(89,101):
+        time.sleep(50*random())
 
-    url = review_url_string_1+str(i)+review_url_string_2
-    driver = webdriver.Chrome()
-    driver.get(url)
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    driver.quit()
+        url = review_url_string_1+str(i)+review_url_string_2
+        driver = webdriver.Chrome()
+        driver.get(url)
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        driver.quit()
 
-    reviews_json = convert_soup_to_json(soup)
+        reviews_json = convert_soup_to_json(soup)
 
-    f = open('data/reviews_separate_pages/review_page_{}.json'.format(i), 'w')
-    f.write(reviews_json)
-    f.close()
+        f = open('data/reviews_separate_pages/review_page_{}.json'.format(i), 'w')
+        f.write(reviews_json)
+        f.close()

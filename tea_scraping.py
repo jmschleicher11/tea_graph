@@ -92,35 +92,35 @@ def clean_info_json(info_json):
     
     return clean_info
 
+def scrape_teas():
+    categories = ['pu-erh', 'black-tea', 'green-tea', 'herbal-tea', 'mate-tea',
+                 'oolong-tea', 'organic', 'rooibos', 'white-tea']
 
-categories = ['pu-erh', 'black-tea', 'green-tea', 'herbal-tea', 'mate-tea', 
-             'oolong-tea', 'organic', 'rooibos', 'white-tea']
+    all_tea_info = []
 
-all_tea_info = []
+    for category in categories:
 
-for category in categories:
-    
-    ## Some categories have multiple pages (no more than 6)
-    sub_pages = [category] + [category+'?page='+str(i) for i in range(1,6)]
-    for sub_page in sub_pages:
-        print(sub_page)
-        time.sleep(10)
-        url = url_string+sub_page
-        page_info = requests.get(url)
-        soup = BeautifulSoup(page_info.content, 'html.parser')
-        tea_json = soup.find_all(type='application/json')
-        
-        ## This will be empty if the page doesn't exit
-        if len(tea_json[2:]) == 0:
-            break
-        else:
-            ## First two application/json tags in pages are not relevant
-            for item in tea_json[2:]:
-                info = json.loads(item.contents[0])  
-                tea_dict = clean_info_json(info)
-                all_tea_info.append(tea_dict)
-            
-final_tea_dict = {"items": all_tea_info}
-            
-with open("./data/all_tea_info.json", "w") as outfile: 
-    json.dump(final_tea_dict, outfile)
+        ## Some categories have multiple pages (no more than 6)
+        sub_pages = [category] + [category+'?page='+str(i) for i in range(1,6)]
+        for sub_page in sub_pages:
+            print(sub_page)
+            time.sleep(10)
+            url = url_string+sub_page
+            page_info = requests.get(url)
+            soup = BeautifulSoup(page_info.content, 'html.parser')
+            tea_json = soup.find_all(type='application/json')
+
+            ## This will be empty if the page doesn't exit
+            if len(tea_json[2:]) == 0:
+                break
+            else:
+                ## First two application/json tags in pages are not relevant
+                for item in tea_json[2:]:
+                    info = json.loads(item.contents[0])
+                    tea_dict = clean_info_json(info)
+                    all_tea_info.append(tea_dict)
+
+    final_tea_dict = {"items": all_tea_info}
+
+    with open("./data/all_tea_info.json", "w") as outfile:
+        json.dump(final_tea_dict, outfile)
