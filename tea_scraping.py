@@ -14,18 +14,21 @@ import time
 from url_file import url_string
 
 
-
 def clean_description(json_description):
     """ Just pull the ingredients from the description and ignore the rest"""
     desc_html = BeautifulSoup(json_description, 'html.parser')
     ing_string = desc_html.find_all('strong')[-1].contents[0]
     ing_string = re.sub(r'\xa0', r' ', ing_string)
     ing_string = re.sub(r'(^Ingredients: |\.)', '', ing_string)
-    ingredients = [item.lower() for item in ing_string.split(' + ')]
+    ingredients = [ing.lower() for ing in ing_string.split(' + ')]
     
     return ingredients
 
 def get_tags(tag_list):
+    """
+    Teas are tagged with things like ingredients, origin, etc. Pull these out
+    as additional connection nodes
+    """
     
     try:
         origin_string = list(filter(lambda x: x.lower().startswith('origin:'), 
@@ -43,13 +46,16 @@ def get_tags(tag_list):
     except:
         pass
         
-    tags = [item.lower() for item in tag_list]
+    tags = [tag.lower() for tag in tag_list]
     
     return origin, tags
 
 
 def clean_info_json(info_json):
-    clean_info = {}
+    """
+    Get the appropriate tea information from the json
+    """
+    clean_info = dict()
     
     clean_info['id'] = str(info_json['id'])
 
