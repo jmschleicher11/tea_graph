@@ -81,6 +81,9 @@ def clean_info_json(info_json):
     ## Get the minimum price for the tea
     clean_info['min_price'] = info_json['price_min']
     
+    ## Get the url for the tea
+    clean_info['url'] = info_json['url']
+    
     return clean_info
 
 

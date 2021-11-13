@@ -2,3 +2,5 @@
 __pycache__/*
 url_file.py
 data/*
+chromedriver
+.idea/*
