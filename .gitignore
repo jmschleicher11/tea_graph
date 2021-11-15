@@ -4,3 +4,4 @@ url_file.py
 data/*
 chromedriver
 .idea/*
+scraping_helpers/__pycache__/*
