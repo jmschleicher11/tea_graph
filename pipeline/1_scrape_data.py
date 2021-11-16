@@ -7,12 +7,16 @@ import sys
 sys.path.append('../')
 
 from scraping_helpers.tea_scraping import scrape_teas
-from scraping_helpers.reviews_scraping import scrape_reviews
+from scraping_helpers.reviews_scraping import scrape_reviews, combine_reviews
 
 print("Scraping Teas~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-scrape_teas()
+# scrape_teas()
 print("Scraping Teas Complete")
 
 print("Scraping Reviews~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-scrape_reviews()
+# scrape_reviews()
 print("Scraping Reviews Complete")
+
+print("Combining Reviews~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+combine_reviews()
+print("Reviews scraped and combined")

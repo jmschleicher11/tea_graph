@@ -122,5 +122,5 @@ def scrape_teas():
 
     final_tea_dict = {"items": all_tea_info}
 
-    with open("./data/all_tea_info.json", "w") as outfile:
+    with open("../data/all_tea_info.json", "w") as outfile:
         json.dump(final_tea_dict, outfile)
